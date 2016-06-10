@@ -17,23 +17,39 @@
 		}
 	}
 
+	App.clear = function(ctx){
+		//App.ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+	}
+
 	//Draw from other sockets
 	App.socket.on('draw', App.draw);
+	App.socket.on('clearCanvas', App.clear);
 
 	//Bind click and drag events to drawing and sockets
 	$(function(){
+		console.log("in function...")
 		App.ctx = $('canvas')[0].getContext("2d");
 		$('canvas').live('drag dragstart dragend', function(e){
+			console.log("draw event");
 			offset = $(this).offset();
 			data = {
 				x: (e.clientX - offset.left),
 				y: (e.clientY - offset.top),
 				type: e.handleObj.type
 			};
-			App.draw(data) //Draw yourself
+			App.draw(data); //Draw yourself
 			App.socket.emit('drawClick', data) //Broadcast draw
+		});
+		$('#clr-btn').on('click', function(e){
+			console.log("clear button click");
+			App.clear(App.ctx);
+			App.socket.emit('clearClick', App.ctx);
 		});
 	});
 </script>
-Hello world
+
+<h1>Canvas</h1>
 <canvas width="800px" height="400px" style="margin: 0 auto; background-color: gray;" ></canvas>
+<hr>
+<button id="clr-btn">Clear</button>
