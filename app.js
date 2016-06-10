@@ -7,7 +7,7 @@ app.io.route('drawClick', function(req){
 });
 
 app.io.route('clearClick', function(req){
-	req.io.broadcast('clearCanvas');
+	req.io.broadcast('clearCanvas', req);
 });
 
 //Send client html
