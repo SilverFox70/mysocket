@@ -8,7 +8,7 @@ app.io.route('ready', function(req){
 
 //Send client html
 app.get('/', function(req, res){
-	res.sendfile(_dirname + '/client.html')
+	res.sendfile(__dirname + '/client.html')
 });
 
 app.listen(3000);
